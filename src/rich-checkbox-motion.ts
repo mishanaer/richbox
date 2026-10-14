@@ -64,7 +64,12 @@ export function statusFrame(state: StatusIconState): StatusFrame {
 function interpolate(a: StatusFrame, b: StatusFrame, t: number): StatusFrame {
   return {
     points: blend(a.points, b.points, t), reveal: blend(a.reveal, b.reveal, t), colors: blend(a.colors, b.colors, t),
-    fill: mix(a.fill, b.fill, t), dash: mix(a.dash, b.dash, t), gap: mix(a.gap, b.gap, t),
+    fill: mix(a.fill, b.fill, t),
+    // A solid outline has no visible dash period. Use the segmented endpoint's
+    // period so opening/closing gaps cannot sweep segments around the outline.
+    dash: mix(a.gap === 0 && b.gap > 0 ? b.dash + b.gap : a.dash,
+      b.gap === 0 && a.gap > 0 ? a.dash + a.gap : b.dash, t),
+    gap: mix(a.gap, b.gap, t),
     // Keep segment positions fixed while their gaps close.
     offset: a.offset, scale: a.scale, stroke: mix(a.stroke, b.stroke, t),
   }

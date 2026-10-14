@@ -60,7 +60,7 @@ export function RichCheckbox(props: RichCheckboxProps) {
         return
       }
       const waitingTime = elapsed - (settled ? 0 : transition.duration)
-      setFrame({ ...statusFrame(state), offset: state === "waiting" ? waitingOffset(waitingTime) : 0 })
+      setFrame({ ...statusFrame(state), offset: state === "waiting" ? waitingOffset(waitingTime) : source.offset })
       if (state !== "waiting") return
       // Sleep through the one-second holds instead of running 60 idle frames/s.
       const phase = Math.max(0, waitingTime - waitingPauseDuration) % waitingCycleDuration

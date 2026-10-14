@@ -30,6 +30,20 @@ describe("status icon transitions", () => {
     expect(middle.points[7]).toBeGreaterThan(71)
     expect(transition.sample(350)).toEqual(statusFrame("error"))
   })
+  test("symbol exit opens dashed gaps in place without changing the period", () => {
+    for (const from of ["warning", "done", "cancelled", "error"] as const) {
+      for (const to of ["dashed", "waiting"] as const) {
+        const source = { ...statusFrame(from), offset: -12 }
+        const transition = statusTransition(source, to)
+        const target = statusFrame(to)
+        for (const time of [360, 400, 450, 500, 549]) {
+          const frame = transition.sample(time)
+          expect(frame.dash + frame.gap).toBeCloseTo(target.dash + target.gap)
+          expect(frame.offset).toBe(-12)
+        }
+      }
+    }
+  })
   test("partial drawing and erasing can be retargeted without a flash", () => {
     for (const [from, to] of [["empty", "cancelled"], ["warning", "empty"], ["progress-25", "done"]] as const) {
       const interrupted = statusTransition(statusFrame(from), to).sample(230)

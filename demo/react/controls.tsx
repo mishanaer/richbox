@@ -62,7 +62,7 @@ function Controls(props: LabControlsProps) {
       <aside aria-label="States">
         <div className="state-list" ref={list} {...hover.handlers}>
           <FluidHoverHighlight hover={hover} className={shape.bg}/>
-          {props.states.map((state, index) => <StateButton key={state.name} state={state} index={index} selected={props.selected === index} onSelect={() => props.onState(index)} registerItem={hover.registerItem}/>)}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 9, 8].map((stateIndex, index) => <StateButton key={props.states[stateIndex].name} state={props.states[stateIndex]} index={index} selected={props.selected === stateIndex} onSelect={() => props.onState(stateIndex)} registerItem={hover.registerItem}/>)}
         </div>
         <div className="settings">
           <div className="setting-row">

@@ -1,21 +1,21 @@
 import { createRoot } from 'react-dom/client'
 import { StrictMode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { RichCheckbox } from '../src/rich-checkbox'
-import { statusFrame, statusLabels, statusNames, statusTransition, waitingOffset } from '../src/rich-checkbox-motion'
+import { Richbox } from '../src/richbox'
+import { richboxFrame, richboxLabels, richboxStates, richboxTransition, waitingOffset } from '../src/richbox-motion'
 import { Controls } from './react/controls'
 import './react/fluid.css'
 import './theme.css'
 import './style.css'
 
-const demoStates = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8].map(index => ({ state: statusNames[index], name: statusLabels[index] }))
+const demoStates = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8].map(index => ({ state: richboxStates[index], name: richboxLabels[index] }))
 const starts = [0, 1, 4.3, 5.65, 7, 8.35, 9.7, 11.25, 12.6, 13.95]
 const total = 15.3
 function timelineFrame(time: number) {
   const index = Math.max(0, starts.findLastIndex(start => time >= start))
-  if (index === 0) return statusFrame('dashed')
+  if (index === 0) return richboxFrame('dashed')
   const elapsed = (time - starts[index]) * 1000
-  const source = { ...statusFrame(demoStates[index - 1].state), offset: index === 2 ? -50 : 0 }
-  const transition = statusTransition(source, demoStates[index].state)
+  const source = { ...richboxFrame(demoStates[index - 1].state), offset: index === 2 ? -50 : 0 }
+  const transition = richboxTransition(source, demoStates[index].state)
   const frame = transition.sample(elapsed)
   return index === 1 && elapsed >= transition.duration
     ? { ...frame, offset: waitingOffset(elapsed - transition.duration) }
@@ -70,9 +70,9 @@ function App() {
   }, [dark])
   const sampled = useMemo(() => timeline ? timelineFrame(time) : undefined, [timeline, time])
   const preview = <div className="glyph" data-state={selected} style={{ width: '132px', transform: 'translate(-50%, -50%)' }}>
-    <RichCheckbox state={demoStates[selected].state} size={132} speed={speed} frame={sampled}/>
+    <Richbox state={demoStates[selected].state} size={132} speed={speed} frame={sampled}/>
   </div>
-  const items = useMemo(() => demoStates.map(item => ({ name: item.name, icon: <span className="mini"><RichCheckbox state={item.state} size={22} animate={false} decorative/></span> })), [])
+  const items = useMemo(() => demoStates.map(item => ({ name: item.name, icon: <span className="mini"><Richbox state={item.state} size={22} animate={false} decorative/></span> })), [])
   return <Controls preview={preview} states={items} selected={selected} dark={dark} playing={playing} time={time} total={total} speed={speed}
     onTheme={() => setDark(!dark)} onPlay={play} onReset={() => { stop(); sync(0) }}
     onSeek={value => { stop(); sync(value) }} onState={select}

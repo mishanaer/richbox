@@ -1,8 +1,8 @@
-# Rich Checkbox
+# Richbox
 
 An animated status indicator for React. Ten states, smooth transitions, and light and dark themes.
 
-[Try the demo](https://mishanaer.github.io/rich-checkbox/)
+[Try the demo](https://mishanaer.com/richbox)
 
 ## Run locally
 
@@ -15,12 +15,12 @@ bun run dev
 
 ## Use the component
 
-Copy `src/rich-checkbox.tsx` and `src/rich-checkbox-motion.ts` into your React app. Install `react` and `motion`.
+Copy `src/richbox.tsx` and `src/richbox-motion.ts` into your React app. Install `react` and `motion`.
 
 ```tsx
-import { RichCheckbox } from './rich-checkbox'
+import { Richbox } from './richbox'
 
-<RichCheckbox state="waiting" size={24} label="Uploading" />
+<Richbox state="waiting" size={24} label="Uploading" />
 ```
 
 Change `state` to animate. This is a visual status indicator, not a form input. Available states:

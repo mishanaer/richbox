@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "status-icon",
+      "name": "richbox",
       "dependencies": {
         "@base-ui/react": "^1.9.0",
         "class-variance-authority": "^0.7.1",

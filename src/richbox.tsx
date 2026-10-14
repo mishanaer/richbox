@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useId, useRef, useState } from "react"
-import { statusColors, statusFrame, statusLabels, statusNames, statusTransition, waitingOffset, waitingTurnDuration, waitingPauseDuration, waitingCycleDuration, type StatusFrame, type StatusIconState } from "./rich-checkbox-motion"
+import { richboxColors, richboxFrame, richboxLabels, richboxStates, richboxTransition, waitingOffset, waitingTurnDuration, waitingPauseDuration, waitingCycleDuration, type RichboxFrame, type RichboxState } from "./richbox-motion"
 
-export type { StatusIconState as RichCheckboxState, StatusFrame } from "./rich-checkbox-motion"
-export type RichCheckboxProps = {
-  state: StatusIconState
+export type { RichboxState, RichboxFrame } from "./richbox-motion"
+export type RichboxProps = {
+  state: RichboxState
   size?: number
   label?: string
   decorative?: boolean
@@ -14,17 +14,17 @@ export type RichCheckboxProps = {
   reducedMotion?: boolean
   speed?: number
   /** Optional externally sampled frame, for a scrubber or deterministic preview. */
-  frame?: StatusFrame
+  frame?: RichboxFrame
 }
 const outline = "M50 5 C85 5 95 15 95 50 C95 85 85 95 50 95 C15 95 5 85 5 50 C5 15 15 5 50 5Z"
 const inner = "M50 17 C77 17 83 23 83 50 C83 77 77 83 50 83 C23 83 17 77 17 50 C17 23 23 17 50 17Z"
 
 /** React component. No global CSS, page mounting, or theme mutation. */
-export function RichCheckbox(props: RichCheckboxProps) {
+export function Richbox(props: RichboxProps) {
   const id = useId()
-  const [frame, updateFrame] = useState(() => statusFrame(props.state))
+  const [frame, updateFrame] = useState(() => richboxFrame(props.state))
   const current = useRef(frame)
-  const setFrame = (next: StatusFrame) => { current.current = next; updateFrame(next) }
+  const setFrame = (next: RichboxFrame) => { current.current = next; updateFrame(next) }
   const [mounted, setMounted] = useState(false)
   const [systemReduced, setSystemReduced] = useState(false)
   const reduced = props.reducedMotion ?? systemReduced
@@ -43,12 +43,12 @@ export function RichCheckbox(props: RichCheckboxProps) {
     const speed = Math.max(.01, props.speed ?? 1)
     if (!mounted) return
     if (external || instant) {
-      setFrame(instant ? statusFrame(state) : external!)
+      setFrame(instant ? richboxFrame(state) : external!)
       return
     }
     const source = current.current
-    const transition = statusTransition(source, state)
-    const settled = JSON.stringify(source) === JSON.stringify(statusFrame(state))
+    const transition = richboxTransition(source, state)
+    const settled = JSON.stringify(source) === JSON.stringify(richboxFrame(state))
     const start = performance.now()
     let raf = 0
     let timer: ReturnType<typeof setTimeout> | undefined
@@ -60,7 +60,7 @@ export function RichCheckbox(props: RichCheckboxProps) {
         return
       }
       const waitingTime = elapsed - (settled ? 0 : transition.duration)
-      setFrame({ ...statusFrame(state), offset: state === "waiting" ? waitingOffset(waitingTime) : source.offset })
+      setFrame({ ...richboxFrame(state), offset: state === "waiting" ? waitingOffset(waitingTime) : source.offset })
       if (state !== "waiting") return
       // Sleep through the one-second holds instead of running 60 idle frames/s.
       const phase = Math.max(0, waitingTime - waitingPauseDuration) % waitingCycleDuration
@@ -74,7 +74,7 @@ export function RichCheckbox(props: RichCheckboxProps) {
     return () => { cancelAnimationFrame(raf); clearTimeout(timer) }
   }, [props.state, props.frame, props.animate, props.speed, reduced, mounted])
   const color = () => {
-    const entries = frame.colors.map((weight, i) => ({ weight, color: statusColors[i] })).filter(item => item.weight > 0)
+    const entries = frame.colors.map((weight, i) => ({ weight, color: richboxColors[i] })).filter(item => item.weight > 0)
     return entries.reduce((result, item, index) => {
       if (index === 0) return item.color
       const sum = entries.slice(0, index + 1).reduce((total, entry) => total + entry.weight, 0)
@@ -86,9 +86,9 @@ export function RichCheckbox(props: RichCheckboxProps) {
     return `M50 50 L50 -50 A100 100 0 ${p > .5 ? 1 : 0} 1 ${50 + 100 * Math.sin(p * Math.PI * 2)} ${50 - 100 * Math.cos(p * Math.PI * 2)} Z`
   }
   const path = (i: number) => `M${frame.points[i]} ${frame.points[i + 1]} L${frame.points[i + 2]} ${frame.points[i + 3]}`
-  return <svg data-status-icon="" viewBox="0 0 100 100" width={props.size ?? 24} height={props.size ?? 24}
+  return <svg data-richbox="" viewBox="0 0 100 100" width={props.size ?? 24} height={props.size ?? 24}
     role={props.decorative ? undefined : "img"} aria-hidden={props.decorative ? true : undefined}
-    aria-label={props.decorative ? undefined : props.label ?? statusLabels[statusNames.indexOf(props.state)]}
+    aria-label={props.decorative ? undefined : props.label ?? richboxLabels[richboxStates.indexOf(props.state)]}
     style={{ display: "inline-block", verticalAlign: "middle", overflow: "visible", color: color(), transform: `scale(${frame.scale})`, transformOrigin: "center" }}>
     <defs><clipPath id={id}><path d={inner}/></clipPath></defs>
     <path data-outline="status" d={outline} fill="none" stroke="currentColor" strokeWidth="8.5" strokeLinecap="round" pathLength="100" strokeDasharray={`${frame.dash} ${frame.gap}`} strokeDashoffset={frame.offset}/>

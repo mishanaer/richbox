@@ -1,9 +1,9 @@
 import { cubicBezier } from "motion"
 
-export const statusNames = ["dashed", "waiting", "empty", "progress-25", "progress-50", "progress-75", "done", "cancelled", "error", "warning"] as const
-export type StatusIconState = typeof statusNames[number]
-export const statusLabels = ["Dashed", "Waiting", "Empty", "25%", "50%", "75%", "Done", "Cancelled", "Error", "Warning"]
-export const statusColors = [
+export const richboxStates = ["dashed", "waiting", "empty", "progress-25", "progress-50", "progress-75", "done", "cancelled", "error", "warning"] as const
+export type RichboxState = typeof richboxStates[number]
+export const richboxLabels = ["Dashed", "Waiting", "Empty", "25%", "50%", "75%", "Done", "Cancelled", "Error", "Warning"]
+export const richboxColors = [
   "var(--deslop-primary-30, var(--accent-primary-30, #1111114D))", "var(--deslop-primary-30, var(--accent-primary-30, #1111114D))", "var(--deslop-primary-30, var(--accent-primary-30, #1111114D))",
   "var(--accent-yellow, #E6BD1F)", "var(--accent-yellow, #E6BD1F)", "var(--accent-green, #5EC257)",
   "var(--accent-blue, #4C92DE)", "var(--deslop-primary-60, var(--accent-primary-60, #11111199))", "var(--accent-red, #E36C5A)", "var(--accent-yellow, #E6BD1F)",
@@ -14,7 +14,7 @@ const shapes = [
   [82, 18, 50, 50, 50, 50, 18, 82],
   [50, 29, 50, 52, 50, 70, 50, 71],
 ]
-export type StatusFrame = {
+export type RichboxFrame = {
   points: number[]
   reveal: number[]
   colors: number[]
@@ -47,12 +47,12 @@ export function waitingOffset(elapsed: number) {
   const phase = Math.max(0, elapsed - waitingPauseDuration)
   return -25 * (Math.floor(phase / waitingCycleDuration) % 4 + spring((phase % waitingCycleDuration) / waitingTurnDuration))
 }
-export function statusFrame(state: StatusIconState): StatusFrame {
-  const index = statusNames.indexOf(state)
+export function richboxFrame(state: RichboxState): RichboxFrame {
+  const index = richboxStates.indexOf(state)
   return {
     points: shapes[Math.max(0, index - 6)].slice(),
     reveal: index >= 6 ? [1, 1] : [0, 0],
-    colors: statusNames.map((_, i) => i === index ? 1 : 0),
+    colors: richboxStates.map((_, i) => i === index ? 1 : 0),
     fill: index >= 3 && index <= 5 ? (index - 2) / 4 : 0,
     dash: index === 0 ? 8 : index === 1 ? 21 : 100,
     gap: index === 0 ? 4.5 : index === 1 ? 4 : 0,
@@ -61,7 +61,7 @@ export function statusFrame(state: StatusIconState): StatusFrame {
     stroke: index === 8 ? 8.5 : 9,
   }
 }
-function interpolate(a: StatusFrame, b: StatusFrame, t: number): StatusFrame {
+function interpolate(a: RichboxFrame, b: RichboxFrame, t: number): RichboxFrame {
   return {
     points: blend(a.points, b.points, t), reveal: blend(a.reveal, b.reveal, t), colors: blend(a.colors, b.colors, t),
     fill: mix(a.fill, b.fill, t),
@@ -74,7 +74,7 @@ function interpolate(a: StatusFrame, b: StatusFrame, t: number): StatusFrame {
     offset: a.offset, scale: a.scale, stroke: mix(a.stroke, b.stroke, t),
   }
 }
-function erase(source: StatusFrame, amount: number) {
+function erase(source: RichboxFrame, amount: number) {
   const lengths = [0, 4].map(i => Math.max(.00001, Math.hypot(source.points[i + 2] - source.points[i], source.points[i + 3] - source.points[i + 1])))
   const removed = amount * (lengths[0] * source.reveal[0] + lengths[1] * source.reveal[1])
   return [
@@ -82,14 +82,14 @@ function erase(source: StatusFrame, amount: number) {
     Math.max(0, source.reveal[1] - removed / lengths[1]),
   ]
 }
-function draw(target: StatusFrame, amount: number) {
+function draw(target: RichboxFrame, amount: number) {
   const lengths = [0, 4].map(i => Math.hypot(target.points[i + 2] - target.points[i], target.points[i + 3] - target.points[i + 1]))
   const split = lengths[0] / (lengths[0] + lengths[1])
   return [clamp(amount / split), clamp((amount - split) / (1 - split))]
 }
 /** Capture a visible frame, never a state index: interrupted transitions stay continuous. */
-export function statusTransition(source: StatusFrame, state: StatusIconState) {
-  const target = statusFrame(state)
+export function richboxTransition(source: RichboxFrame, state: RichboxState) {
+  const target = richboxFrame(state)
   const hasSymbol = source.reveal.some(n => n > 0)
   const toSymbol = target.reveal[0] === 1
   const filling = !hasSymbol && toSymbol && source.fill > 0
@@ -97,7 +97,7 @@ export function statusTransition(source: StatusFrame, state: StatusIconState) {
   const duration = filling || erasing ? 550 : 350
   return {
     duration,
-    sample(elapsed: number): StatusFrame {
+    sample(elapsed: number): RichboxFrame {
       if (elapsed <= 0) return source
       if (elapsed >= duration) return { ...target, offset: state === "waiting" ? 0 : source.offset }
       const p = spring((elapsed - 150) / 200)

@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "./upstream-tokens.css";
+@source "./components";
+@source "./lib";
+@source "./hooks";
+@source "./controls.tsx";
+@custom-variant dark (&:where(.dark, .dark *));
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-primary: var(--foreground);
+  --font-sans:  system-ui, sans-serif;
+}
+/* Theme integration only: upstream component geometry and behavior are unchanged. */
+:root, :root.dark {
+  --background:var(--deslop-background);
+  --foreground:var(--deslop-primary);
+  --muted-foreground:var(--deslop-primary-60);
+  --border:var(--deslop-primary-10);
+  --hover:var(--deslop-primary-4);
+  --active:var(--deslop-primary-8);
+  --selected:var(--deslop-primary-10);
+  --tint:var(--deslop-primary-8);
+  --tint-hover:var(--deslop-primary-5);
+  --focus-ring:var(--accent-blue);
+  --surface-1:var(--deslop-surface);
+  --surface-2:var(--deslop-background);
+  --surface-3:var(--deslop-elevation-1);
+  --surface-4:var(--deslop-elevation-2);
+}

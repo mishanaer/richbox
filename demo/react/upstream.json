@@ -1,0 +1,109 @@
+{
+  "sources": [
+    {
+      "url": "https://www.fluidfunctionalism.com/r/base/button.json",
+      "path": "components/ui/button.tsx",
+      "sha256": "e88b79a554d7ce4b13c3c26febd657e9a33429585f833928f37a726905b02bb7"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/base/select.json",
+      "path": "components/ui/select.tsx",
+      "sha256": "57220f942e21af7a9f7f05cba9c28450e327ee972fc67ee7342b63e5e69e8e7a"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/base/slider.json",
+      "path": "components/ui/slider.tsx",
+      "sha256": "3969597ab3c48a973a704167537b5b6f2840090e66ce91231241853464c8a5b1"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/omit.json",
+      "path": "lib/omit.ts",
+      "sha256": "58b67fea6265a2f99cfabb508cae67eecb36587519212ccb7eb4fff214146bbd"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/font-weight.json",
+      "path": "lib/font-weight.ts",
+      "sha256": "1b290a5eeb29cad9d9c835a26d66e77af8da5e1d412b68da31bd473460631d04"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/shape-context.json",
+      "path": "lib/shape-context.tsx",
+      "sha256": "c88e150726e3b3c0b133fa826942c976283f01252162538677db7dd96cb836c3"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/icon-context.json",
+      "path": "lib/icon-context.tsx",
+      "sha256": "60a37ca536e35a338b155e3404aeb4c8ef98d6cbd6f157778c66a6e77580455c"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/size-context.json",
+      "path": "lib/size-context.tsx",
+      "sha256": "3750783bc61b1560ffee48384a529ec0d34cd5a5d18abe830b34bc8a76ef4563"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/size-context.json",
+      "path": "lib/type-scale.ts",
+      "sha256": "78c430d2e73f1c1d383d8ef5848c00e15ef020cecfc6145d407bed3b2fd0d574"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/springs.json",
+      "path": "lib/springs.ts",
+      "sha256": "b5d1c7c55ba4b865ac1156effc9ae41e95e4fdd08b42cefcda2854e93b817057"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/surface-context.json",
+      "path": "lib/surface-context.tsx",
+      "sha256": "17352842c40d49bd6a90bf8ca21c789fdde8be8904d9e5d667c71f365c48c120"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/surface-classes.json",
+      "path": "lib/surface-classes.ts",
+      "sha256": "cb42a715b587950d9adecbb7994f8b67cdea101eed0852a732365549e7cdc896"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/use-fluid-hover.json",
+      "path": "hooks/use-fluid-hover.ts",
+      "sha256": "5b64e97f7937ecf7d5ee9002e13d9c303efd8de2fdbe2a004711408bb0fbebcc"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/use-fluid-hover.json",
+      "path": "components/ui/fluid-hover-highlight.tsx",
+      "sha256": "6ff7e9ed03524f20a71d2d6062a4754c089b6f984db9e0c829b80977371cb5d2"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/elevated.json",
+      "path": "lib/elevated.tsx",
+      "sha256": "1af5d74cdafa5259379abeb07d19949dfa9628ce20c14f10b664c66ee0985793"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/base/scroll-area.json",
+      "path": "components/ui/scroll-area.tsx",
+      "sha256": "15560f1bd7be61e3be9d9113e883f5d76b447c1faa5720e0bc429481a109111d"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/use-keyboard-nav-gate.json",
+      "path": "hooks/use-keyboard-nav-gate.ts",
+      "sha256": "f7edc88b0cead09145e3c81c2fae943fb71c280b89bc49c34ab69b4f4926e976"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/popup.json",
+      "path": "lib/popup.ts",
+      "sha256": "d6b73fe9ef7a809f49ff6d939f073fafa5b673df817ac64d496846445122a3de"
+    },
+    {
+      "url": "https://www.fluidfunctionalism.com/r/use-touch-primary.json",
+      "path": "hooks/use-touch-primary.tsx",
+      "sha256": "7f8faf99f09138e096119da2b2792fb542f4560cd02a4a5974ce9dc549b6ac62"
+    }
+  ],
+  "dependencies": [
+    "@base-ui/react@^1.9.0",
+    "class-variance-authority",
+    "lucide-react",
+    "motion"
+  ],
+  "integration_changes": [
+    "React JSX import-source directive",
+    "@/ import aliases rewritten to relative paths; no component logic changed"
+  ]
+}

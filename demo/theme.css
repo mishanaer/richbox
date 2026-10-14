@@ -1,0 +1,19 @@
+:root {
+  --deslop-surface: light-dark(#F5F5F5, #111111);
+  --deslop-background: light-dark(#FFFFFF, #151515);
+  --deslop-elevation-1: light-dark(#FFFFFF, #1D1D1D);
+  --deslop-elevation-2: light-dark(#FFFFFF, #282828);
+  --deslop-primary: light-dark(#111111, #FFFFFF);
+  --deslop-primary-90: light-dark(#111111E6, #FFFFFFE6);
+  --deslop-primary-80: light-dark(#111111CC, #FFFFFFCC);
+  --deslop-primary-70: light-dark(#111111B3, #FFFFFFB3);
+  --deslop-primary-60: light-dark(#11111199, #FFFFFF99);
+  --deslop-primary-50: light-dark(#11111180, #FFFFFF80);
+  --deslop-primary-40: light-dark(#11111166, #FFFFFF66);
+  --deslop-primary-30: light-dark(#1111114D, #FFFFFF4D);
+  --deslop-primary-20: light-dark(#11111133, #FFFFFF33);
+  --deslop-primary-10: light-dark(#1111111A, #FFFFFF1A);
+  --deslop-primary-8: light-dark(#11111114, #FFFFFF14);
+  --deslop-primary-5: light-dark(#1111110D, #FFFFFF0D);
+  --deslop-primary-4: light-dark(#1111110A, #FFFFFF0A);
+}

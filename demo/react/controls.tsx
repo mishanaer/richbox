@@ -54,7 +54,7 @@ function Controls(props: LabControlsProps) {
       <div className="preview">
         <SolidSlot className="stage" node={props.preview}/>
         <div className="transport">
-          <Button variant="tertiary" onClick={props.onPlay}>{props.playing ? 'Pause' : 'Start'}</Button>
+          <Button variant="tertiary" className="play-button" onClick={props.onPlay}>{props.playing ? 'Pause' : 'Start'}</Button>
           <Button variant="tertiary" onClick={props.onReset}>Reset</Button>
           <div className="timeline-control"><Slider size="default" variant="scrubber" label="Timeline" value={props.time} min={0} max={props.total} step={1/30} formatValue={value => `${value.toFixed(2)} s`} onChange={value => props.onSeek(typeof value === 'number' ? value : value[0])}/></div>
         </div>

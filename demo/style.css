@@ -21,3 +21,5 @@
 .timeline-control span.shrink-0.z-10{visibility:hidden}
 
 .setting-row>div{width:100%;min-width:0}
+
+.transport .play-button{width:80px;flex:0 0 80px}

@@ -21,6 +21,15 @@ describe("status icon transitions", () => {
       expect(next.sample(next.duration)).toEqual(statusFrame(state))
     }
   })
+  test("warning top moves toward the upper-right end of error", () => {
+    const transition = statusTransition(statusFrame("warning"), "error")
+    const middle = transition.sample(220)
+    expect(middle.points[0]).toBeGreaterThan(50)
+    expect(middle.points[1]).toBeLessThan(29)
+    expect(middle.points[6]).toBeLessThan(50)
+    expect(middle.points[7]).toBeGreaterThan(71)
+    expect(transition.sample(350)).toEqual(statusFrame("error"))
+  })
   test("partial drawing and erasing can be retargeted without a flash", () => {
     for (const [from, to] of [["empty", "cancelled"], ["warning", "empty"], ["progress-25", "done"]] as const) {
       const interrupted = statusTransition(statusFrame(from), to).sample(230)

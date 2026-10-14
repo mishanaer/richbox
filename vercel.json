@@ -4,7 +4,17 @@
   "buildCommand": "bun run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/richbox", "destination": "/index.html" },
-    { "source": "/richbox/:path*", "destination": "/:path*" }
+    {
+      "source": "/ui/richbox",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ui/richbox/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ui/richbox/:path*",
+      "destination": "/:path*"
+    }
   ]
 }

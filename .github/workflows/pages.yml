@@ -24,7 +24,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun test
       - run: bun run typecheck
-      - run: bun run build
+      - run: bun run build --base=/richbox/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

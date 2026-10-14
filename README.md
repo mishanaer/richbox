@@ -2,7 +2,7 @@
 
 An animated status indicator for React. Ten states, smooth transitions, and light and dark themes.
 
-[Try the demo](https://mishanaer.com/richbox)
+[Try the demo](https://mishanaer.com/ui/richbox)
 
 ## Run locally
 

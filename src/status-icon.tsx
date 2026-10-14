@@ -89,7 +89,11 @@ export function StatusIcon(props: StatusIconProps) {
     <defs><clipPath id={id}><path d={inner}/></clipPath></defs>
     <path data-outline="status" d={outline} fill="none" stroke="currentColor" stroke-width="8.5" stroke-linecap="round" pathLength="100" stroke-dasharray={`${frame().dash} ${frame().gap}`} stroke-dashoffset={frame().offset}/>
     <path data-fill="progress" data-progress={frame().fill} d={wedge()} clip-path={`url(#${id})`} fill="currentColor" opacity={frame().fill > 0 ? 1 : 0}/>
-    <path data-mark="status" d={path(0)} fill="none" stroke="currentColor" stroke-width={frame().stroke} stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset={1 - frame().reveal[0]} opacity={frame().reveal[0] > 0 ? 1 : 0}/>
-    <path data-mark="symbol-second" d={path(4)} fill="none" stroke="currentColor" stroke-width={frame().stroke} stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset={1 - frame().reveal[1]} opacity={frame().reveal[1] > 0 ? 1 : 0}/>
+    <defs><mask id={`${id}-symbol`} maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100" style={{ "mask-type": "alpha" }}>
+    <path data-mark="status" d={path(0)} fill="none" stroke="white" stroke-width={frame().stroke} stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset={1 - frame().reveal[0]} opacity={frame().reveal[0] > 0 ? 1 : 0}/>
+    <path data-mark="symbol-second" d={path(4)} fill="none" stroke="white" stroke-width={frame().stroke} stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset={1 - frame().reveal[1]} opacity={frame().reveal[1] > 0 ? 1 : 0}/>
+    </mask></defs>
+    <rect data-symbol-layer="" x="0" y="0" width="100" height="100" fill="currentColor" mask={`url(#${id}-symbol)`}/>
+
   </svg>
 }

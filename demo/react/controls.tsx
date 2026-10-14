@@ -72,7 +72,7 @@ function Controls(props: LabControlsProps) {
             </Select>
           </div>
           <Button variant="tertiary" onClick={props.onTheme}>{props.dark ? 'Dark theme' : 'Light theme'}</Button>
-          <Button variant="tertiary" asChild><a href="https://github.com/mishanaer/status-icon" target="_blank" rel="noopener noreferrer">GitHub</a></Button>
+          <Button variant="primary" asChild><a href="https://github.com/mishanaer/status-icon" target="_blank" rel="noopener noreferrer">GitHub</a></Button>
         </div>
       </aside>
     </section>

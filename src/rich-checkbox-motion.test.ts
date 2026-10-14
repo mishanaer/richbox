@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { statusFrame, statusNames, statusTransition, waitingOffset } from "./status-icon-motion"
+import { statusFrame, statusNames, statusTransition, waitingOffset } from "./rich-checkbox-motion"
 
 describe("status icon transitions", () => {
   test("holds the visible state during scale-down, then morphs", () => {

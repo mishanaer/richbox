@@ -1,8 +1,8 @@
-import { render } from 'solid-js/web'
-import { batch, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
-import { StatusIcon } from '../src/status-icon'
-import { statusFrame, statusLabels, statusNames, statusTransition, waitingOffset } from '../src/status-icon-motion'
-import { FluidControls } from './controls-host'
+import { createRoot } from 'react-dom/client'
+import { StrictMode, useEffect, useMemo, useRef, useState } from 'react'
+import { RichCheckbox } from '../src/rich-checkbox'
+import { statusFrame, statusLabels, statusNames, statusTransition, waitingOffset } from '../src/rich-checkbox-motion'
+import { Controls } from './react/controls'
 import './react/fluid.css'
 import './theme.css'
 import './style.css'
@@ -21,53 +21,53 @@ function timelineFrame(time: number) {
     : frame
 }
 function App() {
-  const [selected, setSelected] = createSignal(0)
-  const [time, setTime] = createSignal(0)
-  const [playing, setPlaying] = createSignal(false)
-  const [timeline, setTimeline] = createSignal(true)
-  const [speed, setSpeed] = createSignal(1)
-  const [dark, setDark] = createSignal(false)
-  let raf = 0
-  const stop = () => { cancelAnimationFrame(raf); setPlaying(false) }
-  const sync = (t: number) => batch(() => {
+  const [selected, setSelected] = useState(0)
+  const [time, setTime] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const [timeline, setTimeline] = useState(true)
+  const [speed, setSpeed] = useState(1)
+  const [dark, setDark] = useState(false)
+  const raf = useRef(0)
+  const stop = () => { cancelAnimationFrame(raf.current); setPlaying(false) }
+  const sync = (t: number) => {
     setTimeline(true)
     setTime(t)
     setSelected(Math.max(0, starts.findLastIndex(start => t >= start)))
-  })
-  const select = (index: number) => batch(() => {
-    if (selected() === index && !timeline()) return
+  }
+  const select = (index: number) => {
+    if (selected === index && !timeline) return
     stop()
     setTimeline(false)
     setSelected(index)
     setTime(index === 0 ? 0 : starts[index] + (index === 6 ? .55 : .35))
-  })
+  }
   const play = () => {
-    if (playing()) return stop()
+    if (playing) return stop()
     stop()
     setPlaying(true)
-    const offset = time() >= total ? 0 : time()
+    const offset = time >= total ? 0 : time
     const start = performance.now()
     const tick = (now: number) => {
-      const t = Math.min(total, offset + Math.max(0, now - start) / 1000 * speed())
+      const t = Math.min(total, offset + Math.max(0, now - start) / 1000 * speed)
       sync(t)
-      if (t < total) raf = requestAnimationFrame(tick)
+      if (t < total) raf.current = requestAnimationFrame(tick)
       else setPlaying(false)
     }
-    raf = requestAnimationFrame(tick)
+    raf.current = requestAnimationFrame(tick)
   }
-  onCleanup(stop)
-  createEffect(() => {
-    document.documentElement.style.colorScheme = dark() ? 'dark' : 'light'
-    document.documentElement.classList.toggle('dark', dark())
-  })
-  const sampled = createMemo(() => timeline() ? timelineFrame(time()) : undefined)
-  const preview = <div class="glyph" data-state={selected()} style={{ width: '132px', transform: 'translate(-50%, -50%)' }}>
-    <StatusIcon state={statusNames[selected()]} size={132} speed={speed()} frame={sampled()}/>
+  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+  useEffect(() => {
+    document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
+    document.documentElement.classList.toggle('dark', dark)
+  }, [dark])
+  const sampled = useMemo(() => timeline ? timelineFrame(time) : undefined, [timeline, time])
+  const preview = <div className="glyph" data-state={selected} style={{ width: '132px', transform: 'translate(-50%, -50%)' }}>
+    <RichCheckbox state={statusNames[selected]} size={132} speed={speed} frame={sampled}/>
   </div>
-  const items = statusNames.map((state, index) => ({ name: statusLabels[index], icon: <span class="mini"><StatusIcon state={state} size={22} animate={false} decorative/></span> as HTMLElement }))
-  return <FluidControls preview={preview as HTMLElement} states={items} selected={selected()} dark={dark()} playing={playing()} time={time()} total={total} speed={speed()}
-    onTheme={() => setDark(!dark())} onPlay={play} onReset={() => { stop(); sync(0) }}
+  const items = useMemo(() => statusNames.map((state, index) => ({ name: statusLabels[index], icon: <span className="mini"><RichCheckbox state={state} size={22} animate={false} decorative/></span> })), [])
+  return <Controls preview={preview} states={items} selected={selected} dark={dark} playing={playing} time={time} total={total} speed={speed}
+    onTheme={() => setDark(!dark)} onPlay={play} onReset={() => { stop(); sync(0) }}
     onSeek={value => { stop(); sync(value) }} onState={select}
     onSpeed={value => { stop(); setSpeed(value) }}/>
 }
-render(() => <App/>, document.getElementById('root')!)
+createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>)

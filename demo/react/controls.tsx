@@ -1,6 +1,5 @@
 /** @jsxImportSource react */
-import { useLayoutEffect, useRef } from 'react'
-import { createRoot } from 'react-dom/client'
+import { useRef, type ReactNode } from 'react'
 import { Button } from './components/ui/button'
 import { Select, SelectTrigger, SelectContent, SelectItem } from './components/ui/select'
 import { Slider } from './components/ui/slider'
@@ -9,8 +8,8 @@ import { useFluidHover, useRegisterFluidHoverItem, type UseFluidHoverReturn } fr
 import { useShape } from './lib/shape-context'
 
 export type LabControlsProps = {
-  preview: HTMLElement
-  states: { name: string; icon: HTMLElement }[]
+  preview: ReactNode
+  states: { name: string; icon: ReactNode }[]
   selected: number
   dark: boolean
   playing: boolean
@@ -24,14 +23,6 @@ export type LabControlsProps = {
   onState: (index: number) => void
   onSpeed: (value: number) => void
 }
-function SolidSlot(props: { node: HTMLElement; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => {
-    ref.current?.appendChild(props.node)
-    return () => props.node.remove()
-  }, [props.node])
-  return <div ref={ref} className={props.className}/>
-}
 function StateButton(props: {
   state: LabControlsProps['states'][number]
   index: number
@@ -42,17 +33,17 @@ function StateButton(props: {
   const ref = useRef<HTMLButtonElement>(null)
   useRegisterFluidHoverItem(props.registerItem, props.index, ref)
   return <Button ref={ref} variant="ghost" active={props.selected} aria-pressed={props.selected} onClick={props.onSelect} className="state-button">
-    <span className="state-content"><SolidSlot node={props.state.icon}/><span>{props.state.name}</span></span>
+    <span className="state-content"><div>{props.state.icon}</div><span>{props.state.name}</span></span>
   </Button>
 }
-function Controls(props: LabControlsProps) {
+export function Controls(props: LabControlsProps) {
   const list = useRef<HTMLDivElement>(null)
   const hover = useFluidHover(list, { axis: 'xy' })
   const shape = useShape()
   return <main>
     <section className="workspace">
       <div className="preview">
-        <SolidSlot className="stage" node={props.preview}/>
+        <div className="stage">{props.preview}</div>
         <div className="transport">
           <Button variant="tertiary" className="play-button" onClick={props.onPlay}>{props.playing ? 'Pause' : 'Start'}</Button>
           <Button variant="tertiary" onClick={props.onReset}>Reset</Button>
@@ -72,14 +63,9 @@ function Controls(props: LabControlsProps) {
             </Select>
           </div>
           <Button variant="tertiary" onClick={props.onTheme}>{props.dark ? 'Dark theme' : 'Light theme'}</Button>
-          <Button variant="primary" asChild><a href="https://github.com/mishanaer/status-icon" target="_blank" rel="noopener noreferrer">GitHub</a></Button>
+          <Button variant="primary" asChild><a href="https://github.com/mishanaer/rich-checkbox" target="_blank" rel="noopener noreferrer">GitHub</a></Button>
         </div>
       </aside>
     </section>
   </main>
-}
-export function mountControls(host: HTMLElement, props: LabControlsProps) {
-  const root = createRoot(host)
-  root.render(<Controls {...props}/>)
-  return { update: (next: LabControlsProps) => root.render(<Controls {...next}/>), dispose: () => root.unmount() }
 }

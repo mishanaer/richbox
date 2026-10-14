@@ -1,8 +1,8 @@
-# Status Icon
+# Rich Checkbox
 
-An animated status icon for Solid. Ten states, smooth transitions, and light and dark themes.
+An animated status indicator for React. Ten states, smooth transitions, and light and dark themes.
 
-[Try the demo](https://mishanaer.github.io/status-icon/)
+[Try the demo](https://mishanaer.github.io/rich-checkbox/)
 
 ## Run locally
 
@@ -15,15 +15,15 @@ bun run dev
 
 ## Use the component
 
-Copy `src/status-icon.tsx` and `src/status-icon-motion.ts` into your Solid app. Install `solid-js` and `motion`.
+Copy `src/rich-checkbox.tsx` and `src/rich-checkbox-motion.ts` into your React app. Install `react` and `motion`.
 
 ```tsx
-import { StatusIcon } from './status-icon'
+import { RichCheckbox } from './rich-checkbox'
 
-<StatusIcon state="waiting" size={24} label="Uploading" />
+<RichCheckbox state="waiting" size={24} label="Uploading" />
 ```
 
-Change `state` to animate. Available states:
+Change `state` to animate. This is a visual status indicator, not a form input. Available states:
 
 `dashed`, `waiting`, `empty`, `progress-25`, `progress-50`, `progress-75`, `done`, `cancelled`, `error`, `warning`.
 

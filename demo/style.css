@@ -22,4 +22,4 @@
 
 .setting-row>div{width:100%;min-width:0}
 
-.transport .play-button{width:80px;flex:0 0 80px}
+.transport>button{width:80px;flex:0 0 80px}

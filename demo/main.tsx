@@ -27,7 +27,13 @@ function App() {
   const [playing, setPlaying] = useState(false)
   const [timeline, setTimeline] = useState(true)
   const [speed, setSpeed] = useState(1)
-  const [dark, setDark] = useState(false)
+  const [dark, setDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem('theme')
+      if (saved === 'dark' || saved === 'light') return saved === 'dark'
+    } catch { /* Theme still works when storage is unavailable. */ }
+    return matchMedia('(prefers-color-scheme: dark)').matches
+  })
   const raf = useRef(0)
   const stop = () => { cancelAnimationFrame(raf.current); setPlaying(false) }
   const sync = (t: number) => {
@@ -63,6 +69,7 @@ function App() {
     document.head.appendChild(style)
     document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
     document.documentElement.classList.toggle('dark', dark)
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light') } catch { /* Storage is optional. */ }
     // Commit the new palette before restoring interactive transitions.
     void document.documentElement.offsetHeight
     const frame = requestAnimationFrame(() => style.remove())
